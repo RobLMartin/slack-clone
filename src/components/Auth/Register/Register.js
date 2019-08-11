@@ -19,7 +19,8 @@ class Register extends Component {
     email: "",
     password: "",
     passwordConfirmation: "",
-    errors: {}
+    errors: {},
+    loading: false
   };
 
   handleChange = event => {
@@ -28,23 +29,28 @@ class Register extends Component {
   };
 
   handleSubmit = event => {
+    event.preventDefault();
     const { email, password } = this.state;
-
     const { errors, isValid } = validateRegisterInput(this.state);
 
     if (isValid) {
-      event.preventDefault();
-      this.setState({ errors: {} }, () =>
+      this.setState({ errors: {}, loading: true }, () =>
         firebase
           .auth()
           .createUserWithEmailAndPassword(email, password)
           .then(createdUser => {
             console.log(createdUser);
+            this.setState({ loading: false });
           })
-          .catch(err => console.error(err))
+          .catch(err => {
+            this.setState({
+              errors: { firebase: err.message, ...errors },
+              loading: false
+            });
+          })
       );
     } else {
-      this.setState({ errors });
+      this.setState({ errors: errors });
     }
   };
 
@@ -54,7 +60,8 @@ class Register extends Component {
       email,
       password,
       passwordConfirmation,
-      errors
+      errors,
+      loading
     } = this.state;
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
@@ -93,6 +100,7 @@ class Register extends Component {
                 iconPosition="left"
                 placeholder="Password"
                 onChange={this.handleChange}
+                className={errors["passwordInvalid"] && "error"}
                 type="password"
               />
               <Form.Input
@@ -103,9 +111,16 @@ class Register extends Component {
                 iconPosition="left"
                 placeholder="Password Confirmation"
                 onChange={this.handleChange}
+                className={errors["passwordInvalid"] && "error"}
                 type="password"
               />
-              <Button color="orange" fluid size="large">
+              <Button
+                disabled={loading}
+                className={loading ? "loading" : ""}
+                color="orange"
+                fluid
+                size="large"
+              >
                 Submit
               </Button>
               <Message>
