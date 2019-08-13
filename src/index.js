@@ -12,18 +12,29 @@ import {
   withRouter
 } from "react-router-dom";
 import firebase from "./firebase";
+import { Provider, connect } from "react-redux";
+import store from "./store/store";
+import { setUser } from "./actions";
+import { Loader, Dimmer } from "semantic-ui-react";
 
 class Root extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        console.log(user);
+        this.props.setUser(user);
         this.props.history.push("/");
       }
     });
   }
 
   render() {
-    return (
+    const { isLoading } = this.props;
+    return isLoading ? (
+      <Dimmer active>
+        <Loader size="huge" content="Preparing chat..." />
+      </Dimmer>
+    ) : (
       <Switch>
         <Route exact path="/" component={App} />
         <Route path="/login" component={Login} />
@@ -33,12 +44,23 @@ class Root extends Component {
   }
 }
 
-const RootWithAuth = withRouter(Root);
+const mapStateToProps = state => ({
+  isLoading: state.user.isLoading
+});
+
+const RootWithAuth = withRouter(
+  connect(
+    mapStateToProps,
+    { setUser }
+  )(Root)
+);
 
 ReactDOM.render(
-  <Router>
-    <RootWithAuth />
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <RootWithAuth />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
 registerServiceWorker();
