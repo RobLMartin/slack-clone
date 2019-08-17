@@ -11,8 +11,6 @@ import {
   Icon
 } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { create } from "domain";
-import { errorPrefix } from "@firebase/util";
 
 class Login extends Component {
   state = {
