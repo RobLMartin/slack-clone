@@ -14,7 +14,7 @@ import {
 import firebase from "./firebase";
 import { Provider, connect } from "react-redux";
 import store from "./store/store";
-import { setUser } from "./actions";
+import { setUser, clearUser } from "./actions";
 import { Loader, Dimmer } from "semantic-ui-react";
 
 class Root extends Component {
@@ -24,6 +24,9 @@ class Root extends Component {
         console.log(user);
         this.props.setUser(user);
         this.props.history.push("/");
+      } else {
+        this.props.clearUser();
+        this.props.history.push("/login");
       }
     });
   }
@@ -51,7 +54,7 @@ const mapStateToProps = state => ({
 const RootWithAuth = withRouter(
   connect(
     mapStateToProps,
-    { setUser }
+    { setUser, clearUser }
   )(Root)
 );
 
