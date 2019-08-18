@@ -25,8 +25,8 @@ class Root extends Component {
         this.props.setUser(user);
         this.props.history.push("/");
       } else {
-        this.props.clearUser();
         this.props.history.push("/login");
+        this.props.clearUser();
       }
     });
   }
