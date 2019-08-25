@@ -19,14 +19,16 @@ import { Loader, Dimmer } from "semantic-ui-react";
 
 class Root extends Component {
   componentDidMount() {
+    const { setUser, history, clearUser } = this.props;
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         console.log(user);
-        this.props.setUser(user);
-        this.props.history.push("/");
+        setUser(user);
+        history.push("/");
       } else {
-        this.props.history.push("/login");
-        this.props.clearUser();
+        history.push("/login");
+        clearUser();
       }
     });
   }
