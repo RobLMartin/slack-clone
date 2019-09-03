@@ -4,7 +4,6 @@ import validateChannelInput from "./validator";
 import firebase from "../../../firebase";
 import { connect } from "react-redux";
 import { setCurrentChannel } from "../../../actions";
-import { relativeTimeThreshold } from "moment";
 
 class Channels extends React.Component {
   state = {
