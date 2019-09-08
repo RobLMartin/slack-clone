@@ -12,7 +12,8 @@ class MessageForm extends Component {
     modal: false
   };
 
-  toggleModal = () => this.setState({ modal: !this.state.modal });
+  openModal = () => this.setState({ modal: true });
+  closeModal = () => this.setState({ modal: false });
 
   handleChange = ({ name, value }) => {
     this.setState({ [name]: value });
@@ -85,12 +86,12 @@ class MessageForm extends Component {
           />
           <Button
             color="teal"
-            onClick={this.toggleModal}
+            onClick={this.openModal}
             content="Upload Media"
             labelPosition="right"
             icon="cloud upload"
           />
-          <FileModal modal={modal} onClick={this.toggleModal} />
+          <FileModal modal={modal} onClick={this.closeModal} />
         </Button.Group>
       </Segment>
     );
