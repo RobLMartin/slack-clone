@@ -5,6 +5,7 @@ import MessagesHeader from "./MessagesHeader";
 import MessageForm from "./MessageForm";
 import Message from "./Message";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
 class Messages extends React.Component {
   state = {
